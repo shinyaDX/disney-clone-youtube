@@ -15,8 +15,6 @@ export default async function Home() {
 
   return (
     <main className="">
-      <h1 className="">lets build Disney</h1>
-
       <CarouselBannerWrapper />
 
       <div className="flex flex-col space-y-2 xl:-mt-48">
