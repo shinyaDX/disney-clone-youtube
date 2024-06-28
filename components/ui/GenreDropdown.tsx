@@ -36,33 +36,44 @@ async function GenreDropdown() {
     },
   };
 
-  const response = await fetch(url, options);
-  const data = (await response.json()) as Genres;
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = (await response.json()) as Genres;
 
-  // dataおよびdata.genresがundefinedでないことを確認
-  if (!data || !data.genres) {
-    return <div>Error: Genres not found</div>;
+    // デバッグ用にdataオブジェクトをログ出力
+    console.log("Fetched data:", data);
+
+    // dataおよびdata.genresがundefinedでないことを確認
+    if (!data || !data.genres) {
+      return <div>Error: Genres not found</div>;
+    }
+
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger className="text-white flex justify-center items-center">
+          Genre
+          <ChevronDown className="ml-1" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Select a Genre</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {data.genres.map((genre) => (
+            <DropdownMenuItem key={genre.id}>
+              <Link href={`/genre/${genre.id}?genre=${genre.name}`}>
+                {genre.name}
+              </Link>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  } catch (error) {
+    console.error("Error fetching genres:", error as Error);
+    return <div>Error: {(error as Error).message}</div>;
   }
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="text-white flex justify-center items-center">
-        Genre
-        <ChevronDown className="ml-1" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Select a Genre</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {data.genres.map((genre) => (
-          <DropdownMenuItem key={genre.id}>
-            <Link href={`/genre/${genre.id}?genre=${genre.name}`}>
-              {genre.name}
-            </Link>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
 }
 
 export default GenreDropdown;
