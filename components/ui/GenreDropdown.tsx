@@ -11,9 +11,15 @@ import {
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 
+interface ExtendedRequestInit extends RequestInit {
+  next?: {
+    revalidate: number;
+  };
+}
+
 async function GenreDropdown() {
   const url = "https://api.themoviedb.org/3/genre/movie/list?language=en";
-  const options: RequestInit = {
+  const options: ExtendedRequestInit = {
     method: "GET",
     headers: {
       accept: "application/json",
