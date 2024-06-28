@@ -1,5 +1,11 @@
 import { SearchResults } from "@/typings";
 
+interface ExtendedRequestInit extends RequestInit {
+  next?: {
+    revalidate: number;
+  };
+}
+
 async function fetchFromTMDB(url: URL, cacheTime?: number) {
   url.searchParams.set("include_adult", "false");
   url.searchParams.set("include_video", "false");
@@ -7,7 +13,7 @@ async function fetchFromTMDB(url: URL, cacheTime?: number) {
   url.searchParams.set("page", "1");
   url.searchParams.set("sort_by", "popularity.desc");
 
-  const options: RequestInit = {
+  const options: ExtendedRequestInit = {
     method: "GET",
     headers: {
       Accept: "application/json",
