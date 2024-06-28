@@ -39,7 +39,12 @@ async function GenreDropdown() {
   try {
     const response = await fetch(url, options);
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      console.error(
+        `Network response was not ok: ${response.status} ${response.statusText}`
+      );
+      throw new Error(
+        `Network response was not ok: ${response.status} ${response.statusText}`
+      );
     }
     const data = (await response.json()) as Genres;
 
@@ -48,6 +53,7 @@ async function GenreDropdown() {
 
     // dataおよびdata.genresがundefinedでないことを確認
     if (!data || !data.genres) {
+      console.error("Error: Genres not found in the fetched data");
       return <div>Error: Genres not found</div>;
     }
 
