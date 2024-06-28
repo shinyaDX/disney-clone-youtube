@@ -39,8 +39,8 @@ async function GenreDropdown() {
   const response = await fetch(url, options);
   const data = (await response.json()) as Genres;
 
-  // data.genresがundefinedでないことを確認
-  if (!data.genres) {
+  // dataおよびdata.genresがundefinedでないことを確認
+  if (!data || !data.genres) {
     return <div>Error: Genres not found</div>;
   }
 
