@@ -25,11 +25,18 @@ interface ExtendedRequestInit extends RequestInit {
 
 async function GenreDropdown() {
   const url = "https://api.themoviedb.org/3/genre/movie/list?language=en";
+  const apiKey = process.env.TMDB_API_KEY;
+
+  if (!apiKey) {
+    console.error("TMDB_API_KEY is not set");
+    return <div>Error: API key is not set</div>;
+  }
+
   const options: ExtendedRequestInit = {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     next: {
       revalidate: 60 * 60 * 24, // 24 hours
