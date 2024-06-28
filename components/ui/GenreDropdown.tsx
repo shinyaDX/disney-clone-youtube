@@ -17,6 +17,12 @@ interface ExtendedRequestInit extends RequestInit {
   };
 }
 
+interface ExtendedRequestInit extends RequestInit {
+  next?: {
+    revalidate: number;
+  };
+}
+
 async function GenreDropdown() {
   const url = "https://api.themoviedb.org/3/genre/movie/list?language=en";
   const options: ExtendedRequestInit = {
@@ -26,12 +32,17 @@ async function GenreDropdown() {
       Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
     },
     next: {
-      revalidate: 60 * 60 * 24, //24hours
+      revalidate: 60 * 60 * 24, // 24 hours
     },
   };
 
   const response = await fetch(url, options);
   const data = (await response.json()) as Genres;
+
+  // data.genresがundefinedでないことを確認
+  if (!data.genres) {
+    return <div>Error: Genres not found</div>;
+  }
 
   return (
     <DropdownMenu>
