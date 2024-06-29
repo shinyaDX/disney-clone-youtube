@@ -8,7 +8,11 @@ type Props = {
 
 async function CarouselBannerWrapper({ id, keywords }: Props) {
   const movies = await getDiscoverMovies(id, keywords);
-  return <CarouselsBanner movies={movies} />;
+  return (
+    <div className="w-full overflow-hidden">
+      <CarouselsBanner movies={movies} />
+    </div>
+  );
 }
 
 export default CarouselBannerWrapper;
